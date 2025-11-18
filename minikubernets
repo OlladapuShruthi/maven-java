@@ -1,0 +1,57 @@
+3)Containerization and deployment in Minikube
+Task-----
+Expected Output:4 running containers of the image in Minikube cluster
+
+
+
+Step-by-Step: Deploy Docker Hub Image in Minikube
+1. Start Minikube with Docker driver
+bash:
+minikube start --driver=docker
+
+2. Verify Docker is running
+bash:
+docker info
+
+Look for Server Version and Running: true.
+3. Create a Kubernetes Deployment
+This example uses the nginx image from Docker Hub:
+kubectl create deployment my-nginx --image=nginx
+
+
+
+. Scale the deployment to
+4 replicas
+kubectl scale deployment my-nginx --replicas=4
+
+5. Verify the pods are running
+kubectl get pods
+You should see 4 pods with names like my-nginx-xxxxxx in Running state.
+
+ou should see 4 pods with names like my-nginx-xxxxxx in Running state.
+6. (Optional) Expose the deployment
+kubectl expose deployment my-nginx --type=NodePort --port=80
+minikube service my-nginx
+
+
+
+
+ Expected Output for Your Task
+Task: 4 running containers of the image in Minikube cluster
+Command to verify:
+kubectl get pods
+
+
+Expected Output:
+NAME                         READY   STATUS    RESTARTS   AGE
+my-nginx-xxxxx               1/1     Running   0          1m
+my-nginx-yyyyy               1/1     Running   0          1m
+my-nginx-zzzzz               1/1     Running   0          1m
+my-nginx-aaaaa               1/1     Running   0          1m
+
+
+
+
+
+
+
