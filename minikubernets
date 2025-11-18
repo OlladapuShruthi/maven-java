@@ -19,7 +19,6 @@ This example uses the nginx image from Docker Hub:
 kubectl create deployment my-nginx --image=nginx
 
 
-
 . Scale the deployment to
 4 replicas
 kubectl scale deployment my-nginx --replicas=4
@@ -52,11 +51,11 @@ my-nginx-aaaaa               1/1     Running   0          1m
 
 
 
-
+------------------------------------------------------------------------------------------------------------
 https://azeemafirdous2005.github.io/SE-LAB-PDFS/
 
 
-Q4)Integrating Webhooks for CI/CD Automation
+Q4)Integrating Webhooks for CI/CD Automation------------------------------------------------------------------------------
 Task-----
 Expected Output:
 Jenkins Pipeline triggered automatically via GitHub Webhook without manual or SCM polling
@@ -125,3 +124,100 @@ Example:
 
 git commit -m "webhook test"
 git push
+
+
+email configuration:------------------------------------------------------------------------------
+Manage Jenkins → Configure System
+Scroll to Email Notification
+
+SMTP Server:smtp.gmail.com
+✔ Use SMTP Authentication:
+
+Check ✔
+
+✔ Username:
+
+Your Gmail
+
+yourname@gmail.com
+✔ Password:
+
+⚠ IMPORTANT: Gmail requires an App Password, NOT your normal password.
+
+If you are using a temporary Gmail for exam:
+
+Go to Google Account
+
+Security
+
+Enable 2-Step Verification
+
+Go to App Passwords
+
+Choose "Mail" + "Windows Computer"
+
+Copy the generated 16-digit password
+
+Paste that in Jenkins.
+Advanced Settings (Required for Gmail)
+
+Click Advanced
+
+Set:
+
+Field	Value
+SMTP Port	587
+Use TLS	✔ Enabled
+Use SSL	❌ Not needed
+
+Save the configuration.
+
+STEP 3: Test the email
+
+Scroll to:
+
+"Send Test Email"
+
+Enter your Gmail:
+
+yourname@gmail.com
+
+
+Click Test.
+
+If everything is correct, you will receive a test email.------------------------------
+Q4)Jenkins Email Notification Configuration
+Task-----
+Expected Output:Jenkins sends an email notification on build failure to the configured recipient list
+
+1️⃣ Configure Email in Jenkins (SMTP Settings)
+In Jenkins:
+Manage Jenkins → Configure System → Email Notification
+Fill:
+SMTP Server: smtp.gmail.com
+Use SMTP Authentication: ✔
+Username: your Gmail ID
+Password: Gmail App Password
+SMTP Port: 587
+Use TLS: ✔
+Save.
+jenkinsfile for Email on FAILURE Only
+node {
+    stage('Build') {
+        bat 'mvn clean install'
+    }
+
+    stage('Test') {
+        // forcing failure for testing
+        bat 'exit 1'
+    }
+}
+
+post {
+    failure {
+        mail to: 'recipient@gmail.com',
+             subject: 'Jenkins Build Failed',
+             body: 'The Jenkins build has failed. Please check console logs.'
+    }
+}
+------------------------------------------------------------------------------------------------------
