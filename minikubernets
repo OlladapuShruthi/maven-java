@@ -55,3 +55,73 @@ my-nginx-aaaaa               1/1     Running   0          1m
 
 https://azeemafirdous2005.github.io/SE-LAB-PDFS/
 
+
+Q4)Integrating Webhooks for CI/CD Automation
+Task-----
+Expected Output:
+Jenkins Pipeline triggered automatically via GitHub Webhook without manual or SCM polling
+
+
+Create Jenkinsfile in GitHub repo/
+node {
+    properties([
+        pipelineTriggers([
+            [$class: 'GitHubPushTrigger']
+        ])
+    ])
+
+    stage('Build') {
+        bat 'mvn clean install'
+    }
+
+    stage('Test') {
+        bat 'mvn test'
+    }
+
+    stage('Deploy') {
+        bat 'echo Deployment Completed'
+    }
+}
+Commit & Push to GitHub.
+Create a new Pipeline Job in Jenkins
+
+STEP 3: Configure Jenkins to use your Jenkinsfile (from GitHub)
+
+Inside the job:
+
+Scroll to Pipeline section:
+
+Definition: Pipeline script from SCM
+
+SCM: Git
+
+Repository URL: your GitHub repo URL
+
+STEP 4: Enable the webhook trigger
+
+Scroll up to Build Triggers:
+
+✔ Check → GitHub hook trigger for GITScm polling
+
+This is important!
+
+ngrok http 8080
+https://abcd1234.ngrok-free.app/github-webhook/
+Go to GitHub:
+
+Your Repo → Settings → Webhooks → Add Webhook
+
+Fill:
+
+Field	Value
+Payload URL	http://<jenkins-url>/github-webhook/
+Content Type	application/json
+Event	Just the push event
+Secret	leave empty
+
+Now go to your repo → make a small change → push.
+
+Example:
+
+git commit -m "webhook test"
+git push
