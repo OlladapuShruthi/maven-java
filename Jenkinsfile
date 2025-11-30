@@ -1,35 +1,35 @@
-pipeline {
-    agent any
+// pipeline {
+//     agent any
 
-    stages {
+//     stages {
 
-        stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/OlladapuShruthi/maven-java.git'
-            }
-        }
+//         stage('Checkout') {
+//             steps {
+//                 git branch: 'main',
+//                     url: 'https://github.com/OlladapuShruthi/maven-java.git'
+//             }
+//         }
 
-        stage('Verify Workspace') {
-            steps {
-                // Shows whether pom.xml exists
-                bat 'dir'
-            }
-        }
+//         stage('Verify Workspace') {
+//             steps {
+//                 // Shows whether pom.xml exists
+//                 bat 'dir'
+//             }
+//         }
 
-        stage('Build') {
-            steps {
-                bat 'mvn clean install'
-            }
-        }
+//         stage('Build') {
+//             steps {
+//                 bat 'mvn clean install'
+//             }
+//         }
 
-        stage('Test') {
-            steps {
-                bat 'mvn test'
-            }
-        }
-    }
-}
+//         stage('Test') {
+//             steps {
+//                 bat 'mvn test'
+//             }
+//         }
+//     }
+// }
 
 // // node{
 // //   stage('Build'){
@@ -47,22 +47,22 @@ pipeline {
 // //   }
   
 // // }
-// node {
-//     properties([
-//         pipelineTriggers([
-//             [$class: 'GitHubPushTrigger']
-//         ])
-//     ])
+node {
+    properties([
+        pipelineTriggers([
+            [$class: 'GitHubPushTrigger']
+        ])
+    ])
 
-//     stage('Build') {
-//         bat 'mvn clean install'
-//     }
+    stage('Build') {
+        bat 'mvn clean install'
+    }
 
-//     stage('Test') {
-//         bat 'mvn test'
-//     }
+    stage('Test') {
+        bat 'mvn test'
+    }
 
-//     stage('Deploy') {
-//         bat 'echo Deployment Completed'
-//     }
-// }
+    stage('Deploy') {
+        bat 'echo Deployment Completed'
+    }
+}
